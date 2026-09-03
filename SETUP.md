@@ -1,61 +1,49 @@
-# Setup — 3 steps
 
-## Step 1 — Paste your API key
+```powershell
+# 1) create & activate venv (only once)
+python -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+. .venv\Scripts\Activate.ps1
 
-Open the file **`.env`** in VS Code.
-
-Find **line 8**:
-
-```
-GOOGLE_API_KEY=PASTE_YOUR_KEY_HERE
-```
-
-Replace `PASTE_YOUR_KEY_HERE` with your key from
-https://aistudio.google.com/app/api-keys
-
-It should end up looking like this — no quotes, no spaces around `=`:
-
-```
-GOOGLE_API_KEY=AQ.Ab8RN6your_actual_key_here
-```
-
-Save with Ctrl+S. **That is the only file you edit.**
-
-## Step 2 — Install
-
-Open the VS Code terminal (Ctrl+`) in this folder:
-
-```
+# 2) install requirements and Playwright browser
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 playwright install chromium
-```
 
-## Step 3 — Run
+# 3) copy .env example and add your key (manual edit)
+Copy-Item .env.example .env
+notepad .env
 
-Run either of these:
-
-```
-python run_project.py
-```
-
-To watch the crawler browser while it runs:
-
-```
+# 4) run pipeline with browser visible
 $env:HEADLESS="false"
 python run_project.py
+
+# 5) (optional) summarize generated tests and run pytest
+$env:HEADLESS="false"
+python scripts/run_and_log_tests.py
 ```
 
-or open `agentic_ai_capstone_colab.ipynb` in VS Code, select a Python kernel
-when prompted, then **Run All**.
+macOS / Linux (bash):
+```bash
+# 1) create & activate venv (only once)
+python3 -m venv .venv
+source .venv/bin/activate
 
-The notebook reads your key from `.env` automatically. Watch the preflight
-cell — if it does not print `ALL CHECKS PASSED`, stop and fix what it reports.
+# 2) install requirements and Playwright browser
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+playwright install chromium
 
----
+# 3) copy .env example and add your key (manual edit)
+cp .env.example .env
+${VISUAL:-nano} .env
 
-## Before you submit or push to GitHub
+# 4) run pipeline with browser visible
+export HEADLESS=false
+python run_project.py
 
-`.gitignore` already excludes `.env`, so `git push` will not upload your key.
+# 5) (optional) summarize generated tests and run pytest
+export HEADLESS=false
+python scripts/run_and_log_tests.py
+```
 
-If you are zipping the folder by hand instead, **delete `.env` first**.
-`.env.example` stays — it shows the format without exposing anything.
